@@ -123,7 +123,7 @@ jobs:
     - name: 'Install Native Image Plugin'
       run: gu install native-image
     - name: 'Build Quarkus Native JAR'
-      run: ./gradlew build -Dquarkus.package.type=native
+      run: ls -lrt && ./gradlew build -Dquarkus.package.type=native
       
       
     - name: 'Get Version Number'
