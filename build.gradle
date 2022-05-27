@@ -16,9 +16,10 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+    implementation "io.quarkus:quarkus-smallrye-health"
 }
 
-group 'org.terminal'
+group 'org.rr.terminal'
 version '1.0'
 
 java {

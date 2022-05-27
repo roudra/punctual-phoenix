@@ -1,4 +1,4 @@
-package org.terminal;
+package org.rr.terminal;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
