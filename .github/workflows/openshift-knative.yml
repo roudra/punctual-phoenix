@@ -155,7 +155,7 @@ jobs:
         # Or, perform a source-to-image build using https://github.com/redhat-actions/s2i-build
         # Otherwise, point this to your Dockerfile/Containerfile relative to the repository root.
         dockerfiles: |
-          ./src/main/docker/Dockerfile.native-micro
+          ./src/main/docker/Dockerfile.native
 
     # https://github.com/redhat-actions/push-to-registry#readme
     - name: Push to registry
@@ -169,7 +169,6 @@ jobs:
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
 
     # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
-
     - name: Install oc
       uses: redhat-actions/openshift-tools-installer@v1
       with:
