@@ -111,19 +111,20 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v3
       
-    - name: Setup Java 11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-        
+#     - name: Setup Java 11
+#       uses: actions/setup-java@v1
+#       with:
+#         java-version: 11
     - name: 'Setup GraalVM Environment'
-      uses: DeLaGuardo/setup-graalvm@2.0
+      uses: DeLaGuardo/setup-graalvm@5.0
       with:
-        graalvm-version: '20.1.0.java11'
-        
+        graalvm: '20.1.0'
+        java: 'java11'  
     - name: 'Install Native Image Plugin'
-      run: |
-        gu install native-image
+      run: gu install native-image
+    - name: 'Build Quarkus Native JAR'
+      run: ./gradlew build -Dquarkus.package.type=native
+      
       
     - name: 'Get Version Number'
       run: echo "::set-env name=VERSION::$(./gradlew properties -q | grep "version:" | awk '{print $2}')"
@@ -138,8 +139,7 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
         
-    - name: 'Build Quarkus Native JAR'
-      run: ./gradlew build -Dquarkus.package.type=native
+
 
     # https://github.com/redhat-actions/buildah-build#readme
     - name: Build from Dockerfile
