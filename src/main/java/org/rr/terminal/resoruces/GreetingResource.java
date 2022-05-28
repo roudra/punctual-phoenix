@@ -1,4 +1,4 @@
-package org.rr.terminal;
+package org.rr.terminal.resoruces;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,4 +13,5 @@ public class GreetingResource {
     public String hello() {
         return "Hello from RESTEasy Reactive";
     }
+
 }
