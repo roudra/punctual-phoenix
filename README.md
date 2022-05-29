@@ -1,6 +1,7 @@
 # Punctual Phoenix
-![Kubernetes Native Deployment - Dev](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev/badge.svg) ![Native Image Deployment -Staging](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage/badge.svg) ![Jvm Deployment - Dev](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev/badge.svg)
-
+[![Deployment [Dev JVM]](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev.yml)
+[![Deployment [Staging Native]](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage.yml)
+[![Deployment [Dev Knative]](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev.yml)
 
 
 
