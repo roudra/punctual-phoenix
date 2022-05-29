@@ -129,8 +129,6 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
         
-
-
     # https://github.com/redhat-actions/buildah-build#readme
     - name: Build from Dockerfile
       id: build-image
@@ -161,6 +159,10 @@ jobs:
       uses: redhat-actions/openshift-tools-installer@v1
       with:
         oc: 4
+    - name: Test Tools
+      run : |
+          oc version --client
+          kubectl --version
 
     # https://github.com/redhat-actions/oc-login#readme
     - name: Log in to OpenShift
