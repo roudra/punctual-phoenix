@@ -1,0 +1,14 @@
+quarkus:
+#  container-image:
+#    group: org.rr.terminal
+#    name: punctual-phoenix
+#    tag: '1.0'
+#    builder: docker
+#    kubernetes:
+#      deployment-target: knative
+#      namespace: rr42724-dev
+#      readiness-probe:
+#        initial-delay: 20s
+#        period: 45s
+  swagger-ui:
+    always-include : true

@@ -19,7 +19,7 @@
 
 # 👋 Visit our GitHub organization at https://github.com/redhat-actions/ to see our actions and provide feedback.
 
-name: Quarkus Native OpenShift (Not Knative)
+name: Quarkus OpenShift [Dev]
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
@@ -28,7 +28,7 @@ env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   # 🖊️ EDIT to set the kube context's namespace after login. Leave blank to use your user's default namespace.
-  OPENSHIFT_NAMESPACE: "rr42724-dev"
+  OPENSHIFT_NAMESPACE: ${{ secrets.OPENSHIFT_NAMESPACE }}
 
   # 🖊️ EDIT to set a name for your OpenShift app, or a default one will be generated below.
   APP_NAME: "punctual-phoenix"
@@ -58,7 +58,7 @@ jobs:
     name: Build and deploy to OpenShift
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
-    environment: production
+    environment: ose-dev
 
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
@@ -115,7 +115,7 @@ jobs:
     - name: 'Build Quarkus Native JAR'
       run: |
         ls -lrt 
-        ./gradlew clean build -Dquarkus.package.type=native
+        ./gradlew clean build
         ls -lrt build/
       
     - name: 'Get Version Number'
@@ -143,7 +143,7 @@ jobs:
         # Or, perform a source-to-image build using https://github.com/redhat-actions/s2i-build
         # Otherwise, point this to your Dockerfile/Containerfile relative to the repository root.
         dockerfiles: |
-          ./src/main/docker/Dockerfile.native
+          ./src/main/docker/Dockerfile.jvm
 
     # https://github.com/redhat-actions/push-to-registry#readme
     - name: Push to registry
