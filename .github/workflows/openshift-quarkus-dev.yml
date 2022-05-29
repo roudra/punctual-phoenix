@@ -162,7 +162,7 @@ jobs:
     - name: Test Tools
       run : |
           oc version --client
-          kubectl version
+          kubectl version --output=yaml
           echo "${{ env.OPENSHIFT_NAMESPACE }}"
 
     # https://github.com/redhat-actions/oc-login#readme
