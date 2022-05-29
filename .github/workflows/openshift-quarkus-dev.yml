@@ -163,6 +163,7 @@ jobs:
       run : |
           oc version --client
           kubectl version
+          echo "${{ env.OPENSHIFT_NAMESPACE }}"
 
     # https://github.com/redhat-actions/oc-login#readme
     - name: Log in to OpenShift
