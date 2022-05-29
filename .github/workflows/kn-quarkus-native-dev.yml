@@ -154,7 +154,7 @@ jobs:
     - name: Create Kubernetes Serving
       id: deploy-and-expose
       run: |
-        kubectl apply -f knative-service.yaml
+        kubectl apply -f ./build/kubernetes/knative.yml
 
     - name: Print application URL
       env:
