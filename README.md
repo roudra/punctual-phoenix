@@ -1,4 +1,11 @@
-# punctual-phoenix Project
+# Punctual Phoenix
+![Kubernetes Native Deployment - Dev](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev/badge.svg) ![Native Image Deployment -Staging](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage/badge.svg) ![Jvm Deployment - Dev](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev/badge.svg)
+
+
+
+
+
+
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
