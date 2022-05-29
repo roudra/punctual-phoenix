@@ -8,5 +8,5 @@ quarkus:
       always-include: true
     container-image:
       builder: docker
-      group: org.rr.terminal
       name: punctual-phoenix-kn
+      registry: ghcr.io
