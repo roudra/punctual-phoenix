@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.quarkus:quarkus-container-image-jib'
+//    implementation 'io.quarkus:quarkus-container-image-jib' -- Will enable if i decide not to use Dockerfiles.
     implementation 'io.quarkus:quarkus-kubernetes'
 
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
