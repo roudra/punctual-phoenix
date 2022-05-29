@@ -129,8 +129,6 @@ jobs:
       if: env.IMAGE_TAGS == ''
       run: |
         echo "IMAGE_TAGS=latest ${VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
-        
-
 
     # https://github.com/redhat-actions/buildah-build#readme
     - name: Build from Dockerfile
@@ -156,7 +154,6 @@ jobs:
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
-
 
     # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
     - name: Install oc

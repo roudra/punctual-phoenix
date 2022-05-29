@@ -56,9 +56,10 @@ on:
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
-    # ubuntu-20.04 can also be used.
+      environment: OSE-Dev
+      # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
-    environment: OSE-Dev
+
 
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
@@ -168,6 +169,11 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+
+    - name: switch projects
+      run : |
+        oc project ${{ env.OPENSHIFT_NAMESPACE }}
+
 
     # This step should create a deployment, service, and route to run your app and expose it to the internet.
     # https://github.com/redhat-actions/oc-new-app#readme
