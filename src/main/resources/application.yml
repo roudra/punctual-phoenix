@@ -4,9 +4,9 @@ quarkus:
     readiness-probe:
       initial-delay: 20s
       period: 45s
-  swagger-ui:
-    always-include: true
-  container-image:
-    builder: docker
-    group: org.rr.terminal
-    name: punctual-phoenix-kn
+    swagger-ui:
+      always-include: true
+    container-image:
+      builder: docker
+      group: org.rr.terminal
+      name: punctual-phoenix-kn

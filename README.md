@@ -1,10 +1,7 @@
 # Punctual Phoenix
-[![Deployment [Dev JVM]](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-dev.yml)
-[![Deployment [Staging Native]](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/openshift-quarkus-native-stage.yml)
-[![Deployment [Dev Knative]](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-quarkus-native-dev.yml)
-
-
-
+[![OSE Qrks JVM [Dev]](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml)
+[![K-Native Qrks [Dev]](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native-dev.yml)
+[![OSE Qrks-n [Staging]](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native-stg.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native-stg.yml)
 
 
 
