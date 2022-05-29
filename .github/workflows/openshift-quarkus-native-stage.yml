@@ -56,7 +56,7 @@ on:
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
-    environment: ose-stage
+    environment: OSE-Staging
     # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
 
