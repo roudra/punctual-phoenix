@@ -162,7 +162,7 @@ jobs:
     - name: Test Tools
       run : |
           oc version --client
-          kubectl --version
+          kubectl version
 
     # https://github.com/redhat-actions/oc-login#readme
     - name: Log in to OpenShift
