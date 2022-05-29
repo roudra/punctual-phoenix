@@ -1,5 +1,5 @@
 
-name: KNative OpenShift
+name: KNative OpenShift [Dev]
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.

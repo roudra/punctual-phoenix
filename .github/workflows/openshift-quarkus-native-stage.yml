@@ -157,6 +157,7 @@ jobs:
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
 
+
     # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
     - name: Install oc
       uses: redhat-actions/openshift-tools-installer@v1
@@ -171,6 +172,11 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+
+    - name: switch projects
+      run : |
+        oc project ${{ env.OPENSHIFT_NAMESPACE }}
+
 
     # This step should create a deployment, service, and route to run your app and expose it to the internet.
     # https://github.com/redhat-actions/oc-new-app#readme
