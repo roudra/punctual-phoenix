@@ -1,5 +1,5 @@
 # Punctual Phoenix
-[![OSE Qrks JVM [Dev]](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml)
+[![Build](https://github.com/roudra/punctual-phoenix/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/build.yml)[![OSE Qrks JVM [Dev]](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm-dev.yml)
 [![K-Native Qrks [Dev]](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native-dev.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native-dev.yml)
 [![OSE Qrks-n [Staging]](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native-stg.yml/badge.svg?branch=main)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native-stg.yml)
 
