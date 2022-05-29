@@ -1,6 +1,6 @@
 quarkus:
-  kubernetes:
-    deployment-target: knative
+    kubernetes:
+        deployment-target: knative
     readiness-probe:
       initial-delay: 20s
       period: 45s
@@ -9,5 +9,4 @@ quarkus:
   container-image:
     builder: docker
     group: org.rr.terminal
-    name: punctual-phoenix
-    tag: 1.0
+    name: punctual-phoenix-kn

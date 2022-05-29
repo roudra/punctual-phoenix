@@ -19,7 +19,7 @@
 
 # 👋 Visit our GitHub organization at https://github.com/redhat-actions/ to see our actions and provide feedback.
 
-name: Quarkus Native OpenShift [Staging]
+name: OSE Qrks-n [Staging]
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
