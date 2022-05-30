@@ -49,7 +49,7 @@ env:
 
 on:
   workflow_run:
-    workflows: [Build & Test]
+    workflows: [K-Native Qrks Dev]
     types:
       - completed
 
