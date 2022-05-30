@@ -67,7 +67,8 @@ jobs:
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
-    - run: |
+    - name: Print Details
+      run: |
         echo "📌 APP NAME ${APP_NAME}"
         echo "📌 DOCKER TAG ${IMAGE_TAGS}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
