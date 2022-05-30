@@ -21,19 +21,29 @@ jobs:
       run: |
         gu install native-image
         echo "✅ GraalVM Native Plugin Installation Successful"
-  checkout-code:
-    name: Checkout Code
-    needs: create-environment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          echo "✅ Checkout Successful"
+
   build-and-test:
     name: Test and Build Native Image.
     needs: checkout-code
     runs-on: ubuntu-latest
     steps:
-    - name: Build with Gradle
-      run: |
-        ls -lrt
+    - name: Checkout
+      uses: actions/checkout@v3
+    - run: |
+          echo "✅ Checkout Successful"
+          ls -lrt
+    - name: Gradle Build Action
+      uses: gradle/gradle-build-action@v2.1.7
+#       with:
+#         # Gradle command line arguments (supports multi-line input)
+#         arguments: # optional
+#         # Path to the root directory of the build
+#         build-root-directory: # optional
+#         # Path to the Gradle executable
+#         gradle-executable: # optional
+#         # When 'true', entries will not be restored from the cache but will be saved at the end of the Job. This allows a 'clean' cache entry to be written.
+#         cache-write-only: # optional
+#         # When 'true', the action will not attempt to restore the Gradle User Home entries from other Jobs.
+#         gradle-home-cache-strict-match: # optional
+#         # Used to uniquely identify the current job invocation. Defaults to the matrix values for this job; this should not be overridden by users (INTERNAL).
+#         workflow-job-context: # optional, default is ${{ toJSON(matrix) }}
