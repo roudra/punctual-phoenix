@@ -99,7 +99,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ env.APP_NAME }}-${{ APP_VERSION }}.yml
+          name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.yml
       - name: Display structure of downloaded files
         run: ls -R
 
@@ -117,7 +117,7 @@ jobs:
       - name: Create Kubernetes Serving
         id: deploy-and-expose
         run: |
-          kubectl apply -f ${{ env.APP_NAME }}-${{ APP_VERSION }}.yml
+          kubectl apply -f ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.yml
       - uses: actions/delete-package-versions@v3
         with:
           owner: ${{ github.repository_owner }}
