@@ -37,9 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-    - name: Branch name
-      run: echo running on branch ${GITHUB_REF##*/}
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract-branch
     - name: Checkout Status
       run: |
         ls -lrt
@@ -56,7 +57,7 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${APP_VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
     - name: Determine OPENSHIFT NAMESPACE
-      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${GITHUB_REF##*/} == 'master'
+      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${{ steps.extract-branch.outputs.branch }} == 'master'
       run: |
         echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
       
