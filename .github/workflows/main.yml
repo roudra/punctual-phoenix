@@ -1,7 +1,11 @@
 name: Final CI/CD
 
 env:
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "rr42724-dev"
   APP_NAME: "punctual-phoenix-kn-native"
+  APP_PORT: ""
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   IMAGE_REGISTRY_USER: ${{ github.actor }}
   IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
@@ -46,11 +50,17 @@ jobs:
         echo "✅ Native Image build Successful"
 
     - name: Get Version Number
-      run: echo "APP_VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
+      run: echo "APP_VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" | tee -a $GITHUB_ENV
     - name: Determine image tags
       if: env.IMAGE_TAGS == ''
       run: |
         echo "IMAGE_TAGS=latest ${APP_VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+    - name: Determine OPENSHIFT NAMESPACE
+      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${GITHUB_REF##*/} == 'master
+      run: |
+        echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
+      
+
     - name: Build from Dockerfile
       id: build-image
       uses: redhat-actions/buildah-build@v2
@@ -73,3 +83,4 @@ jobs:
         echo "📌 APP NAME ${APP_NAME}"
         echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
+        echo "📌 Image ${{env.OPENSHIFT_NAMESPACE}}"
