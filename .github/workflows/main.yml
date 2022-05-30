@@ -24,7 +24,7 @@ jobs:
 
   build-and-test:
     name: Test and Build Native Image.
-    needs: checkout-code
+    needs: create-environment
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
