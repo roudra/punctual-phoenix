@@ -84,7 +84,7 @@ jobs:
     - name: Upload kNative YML
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.APP_NAME }}-${{ steps.get-ver.outputs.app-ver }}.yml
+        name: ${{ env.APP_NAME }}-${{ steps.get-ver.outputs.app-ver }}
         path: ./build/kubernetes/knative.yml
 
     - name: Print Details
@@ -104,7 +104,7 @@ jobs:
 #      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
-          name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}.yml
+          name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}
       - name: Display structure of downloaded files
         run: ls -R
 
@@ -122,9 +122,9 @@ jobs:
       - name: Create Kubernetes Serving
         id: deploy-and-expose
         run: |
-          kubectl apply -f ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}.yml
+          kubectl apply -f knative.yml
       - uses: actions/delete-package-versions@v3
         with:
           owner: ${{ github.repository_owner }}
-          package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}.yml
+          package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
           num-old-versions-to-delete: 5
