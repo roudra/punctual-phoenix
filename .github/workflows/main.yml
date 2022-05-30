@@ -32,18 +32,12 @@ jobs:
     - run: |
           echo "✅ Checkout Successful"
           ls -lrt
-    - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.1.7
-      with:
+#    - name: Gradle Build Action
+#      uses: gradle/gradle-build-action@v2.1.7
+#      with:
 #         # Gradle command line arguments (supports multi-line input)
 #         arguments: # optional
 #         # Path to the root directory of the build
-#         build-root-directory: # optional
+#         build-root-directory: .
 #         # Path to the Gradle executable
 #         gradle-executable: # optional
-#         # When 'true', entries will not be restored from the cache but will be saved at the end of the Job. This allows a 'clean' cache entry to be written.
-#         cache-write-only: # optional
-#         # When 'true', the action will not attempt to restore the Gradle User Home entries from other Jobs.
-#         gradle-home-cache-strict-match: # optional
-#         # Used to uniquely identify the current job invocation. Defaults to the matrix values for this job; this should not be overridden by users (INTERNAL).
-#         workflow-job-context: # optional, default is ${{ toJSON(matrix) }}
