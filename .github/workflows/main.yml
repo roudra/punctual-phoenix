@@ -56,7 +56,7 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${APP_VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
     - name: Determine OPENSHIFT NAMESPACE
-      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${GITHUB_REF##*/} == 'master
+      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${GITHUB_REF##*/} == 'master'
       run: |
         echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
       
