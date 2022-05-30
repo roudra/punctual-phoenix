@@ -5,6 +5,7 @@ env:
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "rr42724-dev"
   APP_NAME: "punctual-phoenix-kn-native"
+  APP_VERSION: ""
   APP_PORT: ""
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   IMAGE_REGISTRY_USER: ${{ github.actor }}
@@ -83,6 +84,7 @@ jobs:
       with:
         name: ${{ env.APP_NAME }}-${{ env.APP_VERSION }}.yml
         path: ./build/kubernetes/knative.yml
+
     - name: Print Details
       run: |
         echo "📌 APP NAME ${APP_NAME}"
@@ -91,11 +93,19 @@ jobs:
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
         echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
       # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
+
   deploy-k-native:
       name: Deploy K Native on Openshift.
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
+      - name: Print Details
+        run: |
+          echo "📌 APP NAME ${APP_NAME}"
+          echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
+          echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
+          echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+          echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
