@@ -32,12 +32,10 @@ jobs:
     - run: |
           echo "✅ Checkout Successful"
           ls -lrt
-#    - name: Gradle Build Action
-#      uses: gradle/gradle-build-action@v2.1.7
-#      with:
-#         # Gradle command line arguments (supports multi-line input)
-#         arguments: # optional
-#         # Path to the root directory of the build
-#         build-root-directory: .
-#         # Path to the Gradle executable
-#         gradle-executable: # optional
+    - name: Gradle Build Action
+      uses: gradle/gradle-build-action@v2.1.7
+      with:
+        arguments: |
+          clean
+          build
+          
