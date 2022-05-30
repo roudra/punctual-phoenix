@@ -29,7 +29,7 @@ env:
 
 on:
   workflow_run:
-    workflows: ['Build & Test', 'OSE Qrks JVM [Dev]']
+    workflows: [Build & Test, OSE Qrks JVM Dev]
     types:
       - completed
 

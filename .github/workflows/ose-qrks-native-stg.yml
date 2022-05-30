@@ -19,7 +19,7 @@
 
 # 👋 Visit our GitHub organization at https://github.com/redhat-actions/ to see our actions and provide feedback.
 
-name: OSE Qrks-n [Staging]
+name: OSE Qrks-n Staging
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
@@ -49,7 +49,7 @@ env:
 
 on:
   workflow_run:
-    workflows: [Build & Test, OSE Qrks JVM [Dev]]
+    workflows: [OSE Qrks JVM Dev]
     types:
       - completed
 
