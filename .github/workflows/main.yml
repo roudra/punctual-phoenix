@@ -102,7 +102,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: Print Details
-        run: echo "APP Version ${{ test-and-package.test-and-package.outputs.app-ver }}"
+        run: echo "APP Version ${{ needs.test-and-package.outputs.app-ver }}"
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
