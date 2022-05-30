@@ -62,7 +62,7 @@ jobs:
     - name: Determine image tags
       if: env.IMAGE_TAGS == ''
       run: |
-        echo "IMAGE_TAGS=latest $${{ steps.get-ver.outputs.app-ver }} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+        echo "IMAGE_TAGS=latest ${{ steps.get-ver.outputs.app-ver }} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
 
     - name: Build from Dockerfile
       id: build-image
@@ -103,7 +103,7 @@ jobs:
       steps:
       - name: Print Details
         run: |
-          echo "📌 APP Version ${{ test-and-package.test-and-package.get-ver.outputs.app-ver }}"
+          echo 📌 APP Version ${{ test-and-package.test-and-package.get-ver.outputs.app-ver }}
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
