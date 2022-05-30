@@ -101,9 +101,7 @@ jobs:
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
-      - name: Print Details
-        run: echo ${{ needs.test-and-package.outputs.app-ver }}
-      - uses: actions/checkout@v2
+#      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}.yml
