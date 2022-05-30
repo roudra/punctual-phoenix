@@ -1,8 +1,16 @@
 name: Build, Test & Deploy
 
+env:
+  APP_NAME: "punctual-phoenix-kn-native"
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY_USER: ${{ github.actor }}
+  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_TAGS: ""
 on:
   push:
-    branches: [ main, development]
+    branches:
+      - main
+      - development
 
 permissions:
   contents: read
@@ -22,7 +30,7 @@ jobs:
         gu install native-image
         echo "✅ GraalVM Native Plugin Installation Successful"
 
-  build-and-test:
+  test-and-package:
     name: Test and Build Native Image.
     needs: create-environment
     runs-on: ubuntu-latest
@@ -32,10 +40,34 @@ jobs:
     - run: |
           echo "✅ Checkout Successful"
           ls -lrt
-    - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.1.7
+    - run: |
+        ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+        echo "✅ Native Image build Successful"
+
+    - name: Get Version Number
+      run: echo "APP_VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" >> $GITHUB_ENV
+    - name: Determine image tags
+      if: env.IMAGE_TAGS == ''
+      run: |
+        echo "IMAGE_TAGS=latest ${APP_VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+    - name: Build from Dockerfile
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
       with:
-        arguments: |
-          clean
-          build
-          nativeTest
+        image: ${{ env.APP_NAME }}
+        tags: ${{ env.IMAGE_TAGS }}
+        dockerfiles: |
+          ./src/main/docker/Dockerfile.native
+    - name: Push to registry
+      id: push-image
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+        username: ${{ env.IMAGE_REGISTRY_USER }}
+        password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+    - run: |
+        echo "📌 APP NAME ${APP_NAME}"
+        echo "📌 DOCKER TAG ${IMAGE_TAGS}"
+        echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
