@@ -1,0 +1,40 @@
+name: Build, Test & Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  create-environment:
+    name: Setup Environment
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Setup GraalVM Environment'
+      uses: DeLaGuardo/setup-graalvm@5.0
+      with:
+        graalvm: '22.0.0.2'
+        java: 'java11'  
+    - name: 'Install Native Image Plugin'
+      run: |
+        gu install native-image
+        echo "✅ GraalVM Native Plugin Installation Successful"
+  checkout-code:
+    name: Checkout Code
+    needs: create-environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          echo "✅ Checkout Successful"
+  build-and-test:
+    name: Test and Build Native Image.
+    needs: checkout-code
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+      with:
+        arguments: clean build nativeTest
