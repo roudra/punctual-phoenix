@@ -31,7 +31,7 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 }
 
-group 'org.rr.terminal'
+group 'org.rr'
 version '1.0.7'
 
 java {

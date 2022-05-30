@@ -1,4 +1,4 @@
-package org.terminal;
+package org.rr.me.pp.rest;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

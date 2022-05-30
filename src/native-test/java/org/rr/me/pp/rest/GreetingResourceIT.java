@@ -1,7 +1,6 @@
-package org.rr.terminal;
+package org.rr.me.pp.rest;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
-import org.terminal.GreetingResourceTest;
 
 @QuarkusIntegrationTest
 public class GreetingResourceIT extends GreetingResourceTest {

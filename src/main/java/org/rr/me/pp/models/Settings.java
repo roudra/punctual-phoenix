@@ -1,6 +1,6 @@
-package org.rr.terminal.models;
+package org.rr.me.pp.models;
+
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 

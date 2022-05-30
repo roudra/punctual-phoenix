@@ -1,4 +1,4 @@
-package org.rr.terminal.resoruces;
+package org.rr.me.pp.rest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

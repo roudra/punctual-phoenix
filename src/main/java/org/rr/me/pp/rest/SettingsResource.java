@@ -1,6 +1,6 @@
-package org.rr.terminal.resoruces;
+package org.rr.me.pp.rest;
 
-import org.rr.terminal.models.Settings;
+import org.rr.me.pp.models.Settings;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
