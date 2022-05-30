@@ -1,11 +1,20 @@
-name: Build, Test & Deploy
+name: Final CI/CD
 
+env:
+  OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: "rr42724-dev"
+  APP_NAME: "punctual-phoenix-kn-native"
+  APP_PORT: ""
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY_USER: ${{ github.actor }}
+  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_TAGS: ""
 on:
   push:
-    branches: [ main ]
-
-permissions:
-  contents: read
+    branches:
+      - main
+      - development
 
 jobs:
   create-environment:
@@ -22,20 +31,100 @@ jobs:
         gu install native-image
         echo "✅ GraalVM Native Plugin Installation Successful"
 
-  build-and-test:
+  test-and-package:
     name: Test and Build Native Image.
     needs: create-environment
     runs-on: ubuntu-latest
+    outputs:
+      app-ver: ${{ steps.get-ver.outputs.app-ver }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - run: |
-          echo "✅ Checkout Successful"
-          ls -lrt
-    - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.1.7
+    - name: Checkout Status
+      run: |
+        ls -lrt
+        echo "✅ Checkout Successful"
+    - name: Extract branch name
+      id: extract-branch
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+    - name: Switch Namespace
+      if: ${{ (steps.extract-branch.outputs.branch == 'master') }}
+      run: |
+        echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
+    - name: Build
+      run: |
+        ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+        echo "✅ Native Image build Successful"
+    - name: Get Version Number
+      id: get-ver
+      run: echo "::set-output name=app-ver::$(./gradlew properties -q | grep "version:" | awk '{print $2}')"
+    - name: Determine image tags
+      if: env.IMAGE_TAGS == ''
+      run: |
+        echo "IMAGE_TAGS=latest ${{ steps.get-ver.outputs.app-ver }} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
+
+    - name: Build from Dockerfile
+      id: build-image
+      uses: redhat-actions/buildah-build@v2
       with:
-        arguments: |
-          clean
-          build
-          
+        image: ${{ env.APP_NAME }}
+        tags: ${{ env.IMAGE_TAGS }}
+        dockerfiles: |
+          ./src/main/docker/Dockerfile.native
+    - name: Push to registry
+      id: push-image
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+        username: ${{ env.IMAGE_REGISTRY_USER }}
+        password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+    - name: Upload kNative YML
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.APP_NAME }}-${{ steps.get-ver.outputs.app-ver }}
+        path: ./build/kubernetes/knative.yml
+
+    - name: Print Details
+      run: |
+        echo "📌 APP NAME ${APP_NAME}"
+        echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
+        echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
+        echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+        echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
+      # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
+
+  deploy-k-native:
+      name: Deploy K Native on Openshift.
+      needs: test-and-package
+      runs-on: ubuntu-latest
+      steps:
+#      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 4
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+      - name: Create Kubernetes Serving
+        id: deploy-and-expose
+        run: |
+          kubectl apply -f knative.yml
+      - uses: actions/delete-package-versions@v3
+        with:
+          owner: ${{ github.repository_owner }}
+          package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
+          num-old-versions-to-delete: 5
