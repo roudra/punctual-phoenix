@@ -1,5 +1,5 @@
 
-name: K-Native Qrks [Dev]
+name: K-Native Qrks Dev
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
