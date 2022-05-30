@@ -34,7 +34,7 @@ jobs:
           ls -lrt
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.1.7
-#       with:
+      with:
 #         # Gradle command line arguments (supports multi-line input)
 #         arguments: # optional
 #         # Path to the root directory of the build
