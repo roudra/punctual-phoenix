@@ -12,9 +12,6 @@ on:
       - main
       - development
 
-permissions:
-  contents: read
-
 jobs:
   create-environment:
     name: Setup Environment
@@ -70,5 +67,5 @@ jobs:
     - name: Print Details
       run: |
         echo "📌 APP NAME ${APP_NAME}"
-        echo "📌 DOCKER TAG ${IMAGE_TAGS}"
+        echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
