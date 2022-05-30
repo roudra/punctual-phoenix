@@ -78,6 +78,11 @@ jobs:
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+    - name: Upload kNative YML
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${APP_NAME}-${APP_VERSION}.yml
+        path: ./build/kubernetes/knative.yml
     - name: Print Details
       run: |
         echo "📌 APP NAME ${APP_NAME}"
@@ -91,6 +96,13 @@ jobs:
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${APP_NAME}-${APP_VERSION}.yml
+      - name: Display structure of downloaded files
+        run: ls -R
+
       - name: Install oc
         uses: redhat-actions/openshift-tools-installer@v1
         with:
@@ -105,4 +117,4 @@ jobs:
       - name: Create Kubernetes Serving
         id: deploy-and-expose
         run: |
-          kubectl apply -f ./build/kubernetes/knative.yml
+          kubectl apply -f ${APP_NAME}-${APP_VERSION}.yml
