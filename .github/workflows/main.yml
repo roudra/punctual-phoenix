@@ -36,7 +36,7 @@ jobs:
     needs: create-environment
     runs-on: ubuntu-latest
     outputs:
-      app_ver: ${{ steps.get-ver.outputs.app-ver }}
+      app-ver: ${{ steps.get-ver.outputs.app-ver }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
