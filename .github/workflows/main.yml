@@ -87,7 +87,7 @@ jobs:
         echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
       # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
   deploy-k-native:
-      name: Test and Build Native Image.
+      name: Deploy K Native on Openshift.
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
