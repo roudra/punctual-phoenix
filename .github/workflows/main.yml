@@ -1,4 +1,4 @@
-name: Build, Test & Deploy
+name: Final CI/CD
 
 env:
   APP_NAME: "punctual-phoenix-kn-native"
