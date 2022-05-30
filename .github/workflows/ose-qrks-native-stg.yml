@@ -48,10 +48,10 @@ env:
   IMAGE_TAGS: ""
 
 on:
-  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
-  push:
-    # Edit to the branch(es) you want to build and deploy on each push.
-    branches: [ main ]
+  workflow_run:
+    workflows: [Build & Test, OSE Qrks JVM [Dev]]
+    types:
+      - completed
 
 jobs:
   openshift-ci-cd:
@@ -116,7 +116,7 @@ jobs:
     - name: 'Build Quarkus Native JAR'
       run: |
         ls -lrt 
-        ./gradlew clean build -Dquarkus.package.type=native
+        ./gradlew clean build -x test -Dquarkus.package.type=native
         ls -lrt build/
       
     - name: 'Get Version Number'
