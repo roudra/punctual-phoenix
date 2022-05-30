@@ -85,3 +85,23 @@ jobs:
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
         echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
+      # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
+  deploy-k-native:
+      name: Test and Build Native Image.
+      needs: test-and-package
+      runs-on: ubuntu-latest
+    - name: Install oc
+      uses: redhat-actions/openshift-tools-installer@v1
+      with:
+        oc: 4
+    - name: Log in to OpenShift
+      uses: redhat-actions/oc-login@v1
+      with:
+        openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+        openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+        insecure_skip_tls_verify: true
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+    - name: Create Kubernetes Serving
+      id: deploy-and-expose
+      run: |
+        kubectl apply -f ./build/kubernetes/knative.yml
