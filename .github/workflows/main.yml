@@ -90,18 +90,19 @@ jobs:
       name: Test and Build Native Image.
       needs: test-and-package
       runs-on: ubuntu-latest
-    - name: Install oc
-      uses: redhat-actions/openshift-tools-installer@v1
-      with:
-        oc: 4
-    - name: Log in to OpenShift
-      uses: redhat-actions/oc-login@v1
-      with:
-        openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
-        openshift_token: ${{ env.OPENSHIFT_TOKEN }}
-        insecure_skip_tls_verify: true
-        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-    - name: Create Kubernetes Serving
-      id: deploy-and-expose
-      run: |
-        kubectl apply -f ./build/kubernetes/knative.yml
+      steps:
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 4
+      - name: Log in to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
+          openshift_token: ${{ env.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+      - name: Create Kubernetes Serving
+        id: deploy-and-expose
+        run: |
+          kubectl apply -f ./build/kubernetes/knative.yml
