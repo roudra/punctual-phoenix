@@ -43,14 +43,13 @@ jobs:
         ls -lrt
         echo "✅ Checkout Successful"
     - name: Extract branch name
+      id: extract-branch
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract-branch
     - name: Build
       run: |
         ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
         echo "✅ Native Image build Successful"
-
     - name: Get Version Number
       run: echo "APP_VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')" | tee -a $GITHUB_ENV
     - name: Determine image tags
@@ -58,11 +57,9 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${APP_VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
     - name: Determine OPENSHIFT NAMESPACE
-      if: env.OPENSHIFT_NAMESPACE == 'rr42724-dev' && ${{ steps.extract-branch.outputs.branch }} == 'master'
+      if : ${{ steps.extract-branch.outputs.branch }} == 'master'
       run: |
         echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
-        echo "${{ steps.extract-branch.outputs.branch }}"
-
     - name: Build from Dockerfile
       id: build-image
       uses: redhat-actions/buildah-build@v2
@@ -85,4 +82,5 @@ jobs:
         echo "📌 APP NAME ${APP_NAME}"
         echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
-        echo "📌 Image ${{env.OPENSHIFT_NAMESPACE}}"
+        echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+        echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
