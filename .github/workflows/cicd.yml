@@ -1,8 +1,7 @@
 name: CI/CD
 
 env:
-  #knative qjvm qnative
-  DEPLOY_WF_TYPE: "qjvm"
+  DEPLOY_WF_TYPE: "qjvm" #knative qjvm qnative
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "rr42724-dev"
@@ -97,6 +96,7 @@ jobs:
         dockerfiles: |
           ./src/main/docker/Dockerfile.native
     - name: Push to registry
+      if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
       id: push-native-image
       uses: redhat-actions/push-to-registry@v2
       with:
