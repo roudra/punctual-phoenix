@@ -31,7 +31,7 @@ env:
   OPENSHIFT_NAMESPACE: rr42724-dev
 
   # 🖊️ EDIT to set a name for your OpenShift app, or a default one will be generated below.
-  APP_NAME: "punctual-phoenix"
+  APP_NAME: "punctual-phoenix-qnative"
 
   # 🖊️ EDIT with the port your application should be accessible on.
   # If the container image exposes *exactly one* port, this can be left blank.
@@ -49,7 +49,7 @@ env:
 
 on:
   workflow_run:
-    workflows: [OSE Qrks JVM Dev]
+    workflows: [OSE Qrks JVM]
     types:
       - completed
 
@@ -139,7 +139,7 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ${{ env.APP_NAME }}-native
+        image: ${{ env.APP_NAME }}
         tags: ${{ env.IMAGE_TAGS }}
 
         # If you don't have a Dockerfile/Containerfile, refer to https://github.com/redhat-actions/buildah-build#scratch-build-inputs
