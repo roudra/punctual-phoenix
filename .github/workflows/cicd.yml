@@ -170,6 +170,18 @@ jobs:
         run: |
           echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
 
+      - name: Print Details
+        run: |
+          echo "📌 APP NAME ${APP_NAME}"
+          echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+          echo "📌 ${{ env.OPENSHIFT_SERVER }}"
+          echo "📌 ${{ env.APP_PORT }}"
+          echo "📌 ${{ env.DEPLOY_WF_TYPE }}"
+          echo "📌 ${{ needs.test-and-package.outputs.app-ver }}"
+          echo "📌 Registry Path ${{ steps.push-image.outputs.registry-path }}"
+
+
+
       - name: Download kNative YML
         if: env.DEPLOY_WF_TYPE == 'knative'
         uses: actions/download-artifact@v3
@@ -208,11 +220,7 @@ jobs:
           owner: ${{ github.repository_owner }}
           package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
           num-old-versions-to-delete: 5
-      - name: Print Details
-        if: env.DEPLOY_WF_TYPE == 'knative'
-        run: |
-          echo "📌 APP NAME ${APP_NAME}"
-          echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+
           
 
       - name: Create and expose app
