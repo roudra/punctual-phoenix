@@ -44,12 +44,12 @@ jobs:
       run: |
         ls -lrt
         echo "✅ Checkout Successful"
-    - name: Extract branch name
-      id: extract-branch
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+#    - name: Extract branch name
+#      id: extract-branch
+#      shell: bash
+#      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
     - name: Switch Namespace
-      if: steps.extract-branch.outputs.branch == 'master'
+      if: github.ref == 'refs/heads/main'
       run: |
         echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
     - name: Build
@@ -93,7 +93,7 @@ jobs:
         echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
-        echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
+#        echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
       # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
 
   deploy-k-native:
