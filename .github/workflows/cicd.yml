@@ -149,7 +149,7 @@ jobs:
           
 
       - name: Create Kubernetes Serving
-        id: deploy-and-expose
+        id: deploy-and-expose-knative
         run: |
           kubectl apply -f knative.yml
       - name: Delete kNative YML
