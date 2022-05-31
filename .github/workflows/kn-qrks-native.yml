@@ -1,5 +1,5 @@
 
-name: K-Native Qrks Dev
+name: K-Native
 
 env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}

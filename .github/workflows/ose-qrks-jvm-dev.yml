@@ -19,7 +19,7 @@
 
 # 👋 Visit our GitHub organization at https://github.com/redhat-actions/ to see our actions and provide feedback.
 
-name: OSE Qrks JVM Dev
+name: OSE Qrks JVM
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
