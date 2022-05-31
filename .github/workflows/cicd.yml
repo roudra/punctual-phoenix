@@ -198,6 +198,7 @@ jobs:
 
       - name: Create Kubernetes Serving
         id: deploy-and-expose-knative
+        if: env.DEPLOY_WF_TYPE == 'knative'
         run: |
           kubectl apply -f knative.yml
       - name: Delete kNative YML
@@ -208,13 +209,14 @@ jobs:
           package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
           num-old-versions-to-delete: 5
       - name: Print Details
+        if: env.DEPLOY_WF_TYPE == 'knative'
         run: |
           echo "📌 APP NAME ${APP_NAME}"
           echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
           
 
       - name: Create and expose app
-        if: (${{env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'}})
+        if: env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'
         id: deploy-and-expose
         uses: redhat-actions/oc-new-app@v1
         with:
@@ -223,7 +225,7 @@ jobs:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
       - name: Print application URL
-        if: (${{env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'}})
+        if: env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'
         env:
           ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
           SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
