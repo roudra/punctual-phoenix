@@ -23,8 +23,6 @@ name: OSE Qrks JVM Dev
 
 env:
   # 🖊️ EDIT your repository secrets to log into your OpenShift cluster and set up the context.
-  # See https://github.com/redhat-actions/oc-login#readme for how to retrieve these values.
-  # To get a permanent token, refer to https://github.com/redhat-actions/oc-login/wiki/Using-a-Service-Account-for-GitHub-Actions
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   # 🖊️ EDIT to set the kube context's namespace after login. Leave blank to use your user's default namespace.
@@ -57,10 +55,7 @@ jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
     environment: OSE-Dev
-    # ubuntu-20.04 can also be used.
     runs-on: ubuntu-18.04
-
-
     outputs:
       ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
       SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
