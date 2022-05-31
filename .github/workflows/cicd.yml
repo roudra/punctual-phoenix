@@ -178,7 +178,6 @@ jobs:
           echo "📌 ${{ env.APP_PORT }}"
           echo "📌 ${{ env.DEPLOY_WF_TYPE }}"
           echo "📌 ${{ needs.test-and-package.outputs.app-ver }}"
-          echo "📌 Registry Path ${{ test-and-package.push-native-image.outputs.registry-path }}"
 
 
 
@@ -229,7 +228,7 @@ jobs:
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
-          image: ${{ test-and-package.push-native-image.outputs.registry-path }}
+          image: ${{ needs.test-and-package.push-native-image.outputs.registry-path }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
       - name: Create and expose app
@@ -238,7 +237,7 @@ jobs:
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
-          image: ${{ test-and-package.push-jvm-image.outputs.registry-path }}
+          image: ${{ needs.test-and-package.push-jvm-image.outputs.registry-path }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
 
