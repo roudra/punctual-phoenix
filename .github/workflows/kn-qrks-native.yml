@@ -12,12 +12,11 @@ env:
   IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_TAGS: ""
 
-
 on:
-  workflow_run:
-    workflows: [OSE Qrks JVM]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - development
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
