@@ -49,7 +49,7 @@ jobs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
     - name: Switch Namespace
-      if: ${{ (steps.extract-branch.outputs.branch == master) }}
+      if: steps.extract-branch.outputs.branch == 'master'
       run: |
         echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
     - name: Build
