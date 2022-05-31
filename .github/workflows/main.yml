@@ -94,7 +94,7 @@ jobs:
       - name: Switch Namespace
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
+          echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}
