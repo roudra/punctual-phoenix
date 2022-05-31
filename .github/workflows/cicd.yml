@@ -2,7 +2,7 @@ name: CI/CD
 
 env:
   #knative qjvm qnative
-  DEPLOY_WF_TYPE = "qjvm"
+  DEPLOY_WF_TYPE: "qjvm"
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "rr42724-dev"
