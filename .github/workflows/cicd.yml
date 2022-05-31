@@ -115,7 +115,7 @@ jobs:
 
   deploy-knative:
       name: Deploy K Native on Openshift.
-      if: env.DEPLOY_WF_TYPE == 'knative'
+      if: ${{ env.DEPLOY_WF_TYPE == 'knative'}}
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
@@ -159,7 +159,7 @@ jobs:
 
   deploy-ose:
     name: Deploy on Openshift.
-    if: env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'
+    if: ${{env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'}}
     needs: test-and-package
     runs-on: ubuntu-latest
     steps:
