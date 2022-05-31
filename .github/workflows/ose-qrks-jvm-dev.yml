@@ -125,9 +125,9 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
     - name: Switch Namespace
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
           
 
     # https://github.com/redhat-actions/buildah-build#readme
