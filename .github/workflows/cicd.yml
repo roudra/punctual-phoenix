@@ -2,7 +2,7 @@ name: CI/CD
 
 env:
   #knative qjvm qnative
-  DEPLOY_WF_TYPE: "qjvm"
+  DEPLOY_WF_TYPE: "knative"
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "rr42724-dev"
@@ -33,6 +33,7 @@ jobs:
         gu install native-image
         echo "✅ GraalVM Native Plugin Installation Successful"
 
+
   test-and-package:
     name: Test and Build Image.
     needs: create-environment
@@ -47,12 +48,12 @@ jobs:
         ls -lrt
         echo "✅ Checkout Successful"
 
-    - name: Build
+    - name: Build Native
       if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
       run: |
         ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
         echo "✅ Native Image build Successful"
-    - name: Build
+    - name: Build JVM
       if: env.DEPLOY_WF_TYPE == 'qjvm'
       run: |
         ./gradlew clean build
@@ -66,7 +67,7 @@ jobs:
       run: |
         echo "IMAGE_TAGS=latest ${{ steps.get-ver.outputs.app-ver }} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
 
-    - name: Build from Dockerfile
+    - name: Build from JVM Dockerfile
       if: env.DEPLOY_WF_TYPE == 'qjvm'
       id: build-image-jvm
       uses: redhat-actions/buildah-build@v2
@@ -86,7 +87,7 @@ jobs:
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
 
 
-    - name: Build from Dockerfile
+    - name: Build from Native Dockerfile
       if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
       id: build-image-native
       uses: redhat-actions/buildah-build@v2
@@ -120,12 +121,49 @@ jobs:
         echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
-
+########################################################################################################################
   deploy:
       name: Deploy on Openshift.
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
+      - name: Check for required secrets
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const secrets = {
+              OPENSHIFT_SERVER: `${{ secrets.OPENSHIFT_SERVER }}`,
+              OPENSHIFT_TOKEN: `${{ secrets.OPENSHIFT_TOKEN }}`,
+            };
+            
+            const GHCR = "ghcr.io";
+            if (`${{ env.IMAGE_REGISTRY }}`.startsWith(GHCR)) {
+              core.info(`Image registry is ${GHCR} - no registry password required`);
+            }
+            else {
+              core.info("A registry password is required");
+              secrets["IMAGE_REGISTRY_PASSWORD"] = `${{ secrets.IMAGE_REGISTRY_PASSWORD }}`;
+            }
+            
+            const missingSecrets = Object.entries(secrets).filter(([ name, value ]) => {
+              if (value.length === 0) {
+                core.error(`Secret "${name}" is not set`);
+                return true;
+              }
+              core.info(`✔️ Secret "${name}" is set`);
+              return false;
+            });
+            
+            if (missingSecrets.length > 0) {
+              core.setFailed(`❌ At least one required secret is not set in the repository. \n` +
+                "You can add it using:\n" +
+                "GitHub UI: https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository \n" +
+                "GitHub CLI: https://cli.github.com/manual/gh_secret_set \n" +
+                "Also, refer to https://github.com/redhat-actions/oc-login#getting-started-with-the-action-or-see-example");
+            }
+            else {
+              core.info(`✅ All the required secrets are set`);
+            }
 
       - name: Switch Namespace
         if: github.ref == 'refs/heads/main'
