@@ -178,7 +178,7 @@ jobs:
           echo "📌 ${{ env.APP_PORT }}"
           echo "📌 ${{ env.DEPLOY_WF_TYPE }}"
           echo "📌 ${{ needs.test-and-package.outputs.app-ver }}"
-          echo "📌 Registry Path ${{ steps.push-image.outputs.registry-path }}"
+          echo "📌 Registry Path ${{ test-and-package.push-native-image.outputs.registry-path }}"
 
 
 
@@ -224,14 +224,24 @@ jobs:
           
 
       - name: Create and expose app
-        if: env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'
+        if: env.DEPLOY_WF_TYPE == 'qnative'
         id: deploy-and-expose
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
-          image: ${{ steps.push-image.outputs.registry-path }}
+          image: ${{ test-and-package.push-native-image.outputs.registry-path }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
+      - name: Create and expose app
+        if: env.DEPLOY_WF_TYPE == 'qjvm'
+        id: deploy-and-expose
+        uses: redhat-actions/oc-new-app@v1
+        with:
+          app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
+          image: ${{ test-and-package.push-jvm-image.outputs.registry-path }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          port: ${{ env.APP_PORT }}
+
       - name: Print application URL
         if: env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'
         env:
