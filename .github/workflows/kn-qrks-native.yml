@@ -1,5 +1,5 @@
 
-name: K-Native Qrks Dev
+name: K-Native
 
 env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
@@ -11,13 +11,13 @@ env:
   IMAGE_REGISTRY_USER: ${{ github.actor }}
   IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
   IMAGE_TAGS: ""
+
+
 on:
-  push:
-    branches:
-      - main
-      - development
-
-
+  workflow_run:
+    workflows: [OSE Qrks JVM]
+    types:
+      - completed
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
@@ -93,7 +93,10 @@ jobs:
       if: env.IMAGE_TAGS == ''
       run: |
         echo "IMAGE_TAGS=latest ${VERSION} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
-        
+    - name: Switch Namespace
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
 
 
     # https://github.com/redhat-actions/buildah-build#readme
