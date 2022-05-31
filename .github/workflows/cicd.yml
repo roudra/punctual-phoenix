@@ -70,7 +70,7 @@ jobs:
 
     - name: Build from Dockerfile
       if: env.DEPLOY_WF_TYPE == 'qjvm'
-      id: build-image
+      id: build-image-jvm
       uses: redhat-actions/buildah-build@v2
       with:
         image: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
@@ -79,7 +79,7 @@ jobs:
           ./src/main/docker/Dockerfile.jvm
     - name: Build from Dockerfile
       if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
-      id: build-image
+      id: build-image-native
       uses: redhat-actions/buildah-build@v2
       with:
         image: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
