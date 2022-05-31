@@ -119,8 +119,10 @@ jobs:
     - name: Print Details
       run: |
         echo "📌 APP NAME ${APP_NAME}"
-        echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
-        echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
+        echo "📌 DOCKER TAG ${{ steps.build-image-jvm.outputs.tags }}"
+        echo "📌 Image ${{ steps.push-jvm-image.outputs.registry-path }}"
+        echo "📌 DOCKER TAG ${{ steps.build-image-native.outputs.tags }}"
+        echo "📌 Image ${{ steps.push-native-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
 ########################################################################################################################
   deploy:
