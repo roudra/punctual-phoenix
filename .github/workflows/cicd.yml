@@ -1,10 +1,12 @@
-name: Final CI/CD
+name: CI/CD
 
 env:
+  #knative qjvm qnative
+  DEPLOY_WF_TYPE: "qjvm"
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "rr42724-dev"
-  APP_NAME: "punctual-phoenix-kn-native"
+  APP_NAME: "punctual-phoenix"
   APP_PORT: ""
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   IMAGE_REGISTRY_USER: ${{ github.actor }}
@@ -32,7 +34,7 @@ jobs:
         echo "✅ GraalVM Native Plugin Installation Successful"
 
   test-and-package:
-    name: Test and Build Native Image.
+    name: Test and Build Image.
     needs: create-environment
     runs-on: ubuntu-latest
     outputs:
@@ -44,10 +46,18 @@ jobs:
       run: |
         ls -lrt
         echo "✅ Checkout Successful"
+
     - name: Build
+      if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
       run: |
         ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
         echo "✅ Native Image build Successful"
+    - name: Build
+      if: env.DEPLOY_WF_TYPE == 'qjvm'
+      run: |
+        ./gradlew clean build
+        echo "✅ JVM Image build Successful"
+
     - name: Get Version Number
       id: get-ver
       run: echo "::set-output name=app-ver::$(./gradlew properties -q | grep "version:" | awk '{print $2}')"
@@ -57,23 +67,48 @@ jobs:
         echo "IMAGE_TAGS=latest ${{ steps.get-ver.outputs.app-ver }} ${GITHUB_SHA::12}" | tee -a $GITHUB_ENV
 
     - name: Build from Dockerfile
-      id: build-image
+      if: env.DEPLOY_WF_TYPE == 'qjvm'
+      id: build-image-jvm
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ${{ env.APP_NAME }}
+        image: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
         tags: ${{ env.IMAGE_TAGS }}
         dockerfiles: |
-          ./src/main/docker/Dockerfile.native
+          ./src/main/docker/Dockerfile.jvm
     - name: Push to registry
-      id: push-image
+      id: push-jvm-image
       uses: redhat-actions/push-to-registry@v2
       with:
-        image: ${{ steps.build-image.outputs.image }}
+        image: ${{ steps.build-image-jvm.outputs.image }}
         tags: ${{ steps.build-image.outputs.tags }}
         registry: ${{ env.IMAGE_REGISTRY }}
         username: ${{ env.IMAGE_REGISTRY_USER }}
         password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+
+
+    - name: Build from Dockerfile
+      if: env.DEPLOY_WF_TYPE == 'knative' || env.DEPLOY_WF_TYPE == 'qnative'
+      id: build-image-native
+      uses: redhat-actions/buildah-build@v2
+      with:
+        image: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
+        tags: ${{ env.IMAGE_TAGS }}
+        dockerfiles: |
+          ./src/main/docker/Dockerfile.native
+    - name: Push to registry
+      id: push-native-image
+      uses: redhat-actions/push-to-registry@v2
+      with:
+        image: ${{ steps.build-image-native.outputs.image }}
+        tags: ${{ steps.build-image.outputs.tags }}
+        registry: ${{ env.IMAGE_REGISTRY }}
+        username: ${{ env.IMAGE_REGISTRY_USER }}
+        password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+
+
+
     - name: Upload kNative YML
+      if: env.DEPLOY_WF_TYPE == 'knative'
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.APP_NAME }}-${{ steps.get-ver.outputs.app-ver }}
@@ -86,16 +121,20 @@ jobs:
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
 
-  deploy-k-native:
-      name: Deploy K Native on Openshift.
+  deploy:
+      name: Deploy on Openshift.
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
+
       - name: Switch Namespace
         if: github.ref == 'refs/heads/main'
         run: |
           echo "OPENSHIFT_NAMESPACE=rr42724-stage" | tee -a $GITHUB_ENV
-      - uses: actions/download-artifact@v3
+
+      - name: Download kNative YML
+        if: env.DEPLOY_WF_TYPE == 'knative'
+        uses: actions/download-artifact@v3
         with:
           name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}
       - name: Display structure of downloaded files
@@ -115,11 +154,17 @@ jobs:
       - name: switch projects
         run: |
           oc project ${{ env.OPENSHIFT_NAMESPACE }}
+          
+          
+          
+
       - name: Create Kubernetes Serving
-        id: deploy-and-expose
+        id: deploy-and-expose-knative
         run: |
           kubectl apply -f knative.yml
-      - uses: actions/delete-package-versions@v3
+      - name: Delete kNative YML
+        if: env.DEPLOY_WF_TYPE == 'knative'
+        uses: actions/delete-package-versions@v3
         with:
           owner: ${{ github.repository_owner }}
           package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
@@ -128,3 +173,27 @@ jobs:
         run: |
           echo "📌 APP NAME ${APP_NAME}"
           echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
+          
+
+      - name: Create and expose app
+        if: (${{env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'}})
+        id: deploy-and-expose
+        uses: redhat-actions/oc-new-app@v1
+        with:
+          app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
+          image: ${{ steps.push-image.outputs.registry-path }}
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          port: ${{ env.APP_PORT }}
+      - name: Print application URL
+        if: (${{env.DEPLOY_WF_TYPE == 'qjvm' || env.DEPLOY_WF_TYPE == 'qnative'}})
+        env:
+          ROUTE: ${{ steps.deploy-and-expose.outputs.route }}
+          SELECTOR: ${{ steps.deploy-and-expose.outputs.selector }}
+        run: |
+          [[ -n ${{ env.ROUTE }} ]] || (echo "Determining application route failed in previous step"; exit 1)
+          echo
+          echo "======================== Your application is available at: ========================"
+          echo ${{ env.ROUTE }}
+          echo "==================================================================================="
+          echo
+          echo "Your app can be taken down with: \"oc delete all --selector='${{ env.SELECTOR }}'\""
