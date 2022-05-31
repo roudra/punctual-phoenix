@@ -44,14 +44,6 @@ jobs:
       run: |
         ls -lrt
         echo "✅ Checkout Successful"
-#    - name: Extract branch name
-#      id: extract-branch
-#      shell: bash
-#      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-    - name: Switch Namespace
-      if: github.ref == 'refs/heads/main'
-      run: |
-        echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
     - name: Build
       run: |
         ./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
@@ -93,15 +85,16 @@ jobs:
         echo "📌 DOCKER TAG ${{ steps.build-image.outputs.tags }}"
         echo "📌 Image ${{ steps.push-image.outputs.registry-path }}"
         echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
-#        echo "📌 Branch ${{ steps.extract-branch.outputs.branch }}"
-      # The path the image was pushed to is now stored in ${{ steps.push-image.outputs.registry-path }}
 
   deploy-k-native:
       name: Deploy K Native on Openshift.
       needs: test-and-package
       runs-on: ubuntu-latest
       steps:
-#      - uses: actions/checkout@v2
+      - name: Switch Namespace
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "OPENSHIFT_NAMESPACE=rr42724-staging" | tee -a $GITHUB_ENV
       - uses: actions/download-artifact@v3
         with:
           name: ${{ env.APP_NAME }}-${{ needs.test-and-package.outputs.app-ver }}
@@ -119,6 +112,9 @@ jobs:
           openshift_token: ${{ env.OPENSHIFT_TOKEN }}
           insecure_skip_tls_verify: true
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+      - name: switch projects
+        run: |
+          oc project ${{ env.OPENSHIFT_NAMESPACE }}
       - name: Create Kubernetes Serving
         id: deploy-and-expose
         run: |
@@ -128,3 +124,7 @@ jobs:
           owner: ${{ github.repository_owner }}
           package-name: ${APP_NAME}-${{ needs.test-and-package.outputs.app-ver }}
           num-old-versions-to-delete: 5
+      - name: Print Details
+        run: |
+          echo "📌 APP NAME ${APP_NAME}"
+          echo "📌 NS ${{env.OPENSHIFT_NAMESPACE}}"
