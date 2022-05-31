@@ -48,10 +48,10 @@ env:
   IMAGE_TAGS: ""
 
 on:
-  workflow_run:
-    workflows: [OSE Qrks JVM]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - development
 
 jobs:
   openshift-ci-cd:
