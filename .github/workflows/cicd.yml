@@ -34,7 +34,7 @@ jobs:
         echo "✅ GraalVM Native Plugin Installation Successful"
 
   test-and-package:
-    name: Test and Build Native Image.
+    name: Test and Build Image.
     needs: create-environment
     runs-on: ubuntu-latest
     outputs:
