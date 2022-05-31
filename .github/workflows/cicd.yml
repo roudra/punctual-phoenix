@@ -39,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       app-ver: ${{ steps.get-ver.outputs.app-ver }}
+      img-qjvm: ${{ steps.push-jvm-image.outputs.registry-path }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -237,7 +238,7 @@ jobs:
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
-          image: ${{ needs.test-and-package.push-jvm-image.outputs.registry-path }}
+          image: ${{ needs.test-and-package.img-qjvm }}
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           port: ${{ env.APP_PORT }}
 
