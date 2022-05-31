@@ -225,7 +225,7 @@ jobs:
 
       - name: Create and expose app
         if: env.DEPLOY_WF_TYPE == 'qnative'
-        id: deploy-and-expose
+        id: deploy-and-expose-qnative
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
@@ -234,7 +234,7 @@ jobs:
           port: ${{ env.APP_PORT }}
       - name: Create and expose app
         if: env.DEPLOY_WF_TYPE == 'qjvm'
-        id: deploy-and-expose
+        id: deploy-and-expose-qjvm
         uses: redhat-actions/oc-new-app@v1
         with:
           app_name: ${{ env.APP_NAME }}-${{ env.DEPLOY_WF_TYPE }}
