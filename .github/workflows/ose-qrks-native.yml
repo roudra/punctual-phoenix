@@ -116,7 +116,7 @@ jobs:
     - name: 'Build Quarkus Native JAR'
       run: |
         ls -lrt 
-        ./gradlew clean build -x test -Dquarkus.package.type=native
+        ./gradlew clean build -x test -Dquarkus.package.type=native -Dquarkus.native.container-build=true
         ls -lrt build/
       
     - name: 'Get Version Number'
