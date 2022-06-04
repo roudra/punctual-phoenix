@@ -1,28 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Node Color Counter</title>
-    <script type="text/javascript" src="jquery-3.6.0.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap.bundle.min.js"></script>
 
+    <style>
+        .grid-container {
+          display: grid;
+          width: 500px;
+          grid-template-columns: auto auto auto;
+          gap: 2px;
+          background-color: rgb(255, 243, 205);
+          padding: 2px;
+        }
+
+        .grid-container > div {
+          background-color: rgba(255, 255, 255, 0.8);
+          text-align: center;
+          padding: 5px 0;
+          font-size: 20px;
+        }
+    </style>
 </head>
 
 <body>
-<div>
-    <div>
-        <span>Total calls :</span><span id="total">0</span>
-    </div>
-    <div>
-        <span>RED :</span> <span id="red">0</span> : <span id="redp">0 %</span>
-    </div>
-    <div>
-        <span>BLUE</span> <span id="blue">0</span> : <span id="bluep">0 %</span>
-    </div>
-    <div>
-        <span>GREEN</span> <span id="green">0</span> : <span id="greenp">0 %</span>
-    </div>
-    <button id="start_timer" onclick="tmr=setInterval(callApi, 1000);">Start</button>
-    <button id="stop_timer" onclick="clearInterval(tmr);">Stop</button>
+<div class="grid-container">
+        <div>Total calls :</div><div id="total" style="grid-column: 2 / span 2;grid-row: 1;">0</div>
+        <div style="text-align: left; padding-left:10px; background-color:#dc3545; color:#FFFFFF">RED</div><div id="red">0</div><div id="redp">0 %</div>
+        <div style="text-align: left; padding-left:10px; background-color:rgb(5, 44, 101); color:#FFFFFF">BLUE</div><div id="blue">0</div><div id="bluep">0 %</div>
+        <div style="text-align: left; padding-left:10px; background-color:rgb(15, 81, 50); color:#FFFFFF">GREEN</div><div id="green">0</div><div id="greenp">0 %</div>
 </div>
+<br/>
+<button id="start_timer" onclick="tmr=setInterval(callApi, 1000);" class="btn btn-primary">Start</button>
+<button id="stop_timer" onclick="clearInterval(tmr);" class="btn btn-secondary">Stop</button>
 <script type="text/javascript">
         var cntr=0;
         var red = 0;
@@ -37,18 +49,16 @@
             request.onload = ()=>{
                 var color = JSON.parse(request.response).color;
                 document.getElementById("total").innerText = cntr;
-                if(color == "RED"){
+                if(color == "RED")
                     document.getElementById("red").innerText = ++red;
-                    document.getElementById("redp").innerText = (red*100/(red+blue+green)) + "%";
-                }
-                if(color == "BLUE"){
+                else if(color == "BLUE")
                     document.getElementById("blue").innerText = ++blue;
-                    document.getElementById("bluep").innerText = (blue*100/(red+blue+green)) + "%";
-                }
-                if(color == "GREEN"){
+                else if(color == "GREEN")
                     document.getElementById("green").innerText = ++green;
-                    document.getElementById("greenp").innerText = (green*100/(red+blue+green))+ "%";
-                }
+                document.getElementById("redp").innerText = (red*100/(red+blue+green)) + "%";
+                document.getElementById("bluep").innerText = (blue*100/(red+blue+green)) + "%";
+                document.getElementById("greenp").innerText = (green*100/(red+blue+green))+ "%";
+
             }
         }
     </script>
