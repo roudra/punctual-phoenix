@@ -9,25 +9,19 @@
 <body>
 <div>
     <div>
-        <span id="red">0</span>
-        <span id="redp">0 %</span>
-        <p>RED</p>
+        <span>Total calls :</span><span id="total">0</span>
     </div>
     <div>
-        <span id="blue">0</span>
-        <span id="bluep">0 %</span>
-        <p>BLUE</p>
+        <span>RED :</span> <span id="red">0</span> : <span id="redp">0 %</span>
     </div>
     <div>
-        <span id="green">0</span>
-        <span id="greenp">0 %</span>
-        <p>GREEN</p>
+        <span>BLUE</span> <span id="blue">0</span> : <span id="bluep">0 %</span>
     </div>
     <div>
-        <span id="total">0</span>
-        <p>Total calls</p>
+        <span>GREEN</span> <span id="green">0</span> : <span id="greenp">0 %</span>
     </div>
-    <button id="start_timer" onclick="setInterval(callApi, 1000);">Start</button>
+    <button id="start_timer" onclick="tmr=setInterval(callApi, 1000);">Start</button>
+    <button id="stop_timer" onclick="clearInterval(tmr);">Stop</button>
 </div>
 <script type="text/javascript">
         var cntr=0;
@@ -35,11 +29,8 @@
         var blue=0;
         var green = 0;
 
-
-
         function callApi(){
             cntr++;
-
             var request = new XMLHttpRequest();
             request.open('GET', 'https://punctual-phoenix-kn-native-rr42724-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/settings')
             request.send();
@@ -52,11 +43,11 @@
                 }
                 if(color == "BLUE"){
                     document.getElementById("blue").innerText = ++blue;
-                    document.getElementById("bluep").innerText = blue*100/(red+blue+green);
+                    document.getElementById("bluep").innerText = (blue*100/(red+blue+green)) + "%";
                 }
                 if(color == "GREEN"){
                     document.getElementById("green").innerText = ++green;
-                    document.getElementById("greenp").innerText = green*100/(red+blue+green);
+                    document.getElementById("greenp").innerText = (green*100/(red+blue+green))+ "%";
                 }
             }
         }
