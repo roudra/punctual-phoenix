@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Node Color Counter</title>
+    <script type="text/javascript" src="jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        var cntr =0;
+        function callApi(arg){
+            cntr++;
+            document.getElementById("total").innerText = cntr;
+            var request = new XMLHttpRequest();
+            request.open('GET', 'https://punctual-phoenix-kn-native-rr42724-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/settings')
+            request.send();
+            request.onload = ()=>{
+                console.log(JSON.parse(request.response).color);
+            }
+        }
+        document.getElementById("start_timer").onclick=setTimeout(callApi, 3000);
+    </script>
+</head>
+
+<body>
+<div>
+    <div>
+        <span id="red">0</span>
+        <p>RED</p>
+    </div>
+    <div>
+        <span id="blue">0</span>
+        <p>BLUE</p>
+    </div>
+    <div>
+        <span id="green">0</span>
+        <p>GREEN</p>
+    </div>
+    <div>
+        <span id="total">0</span>
+        <p>Total calls</p>
+    </div>
+    <button id="start_timer">Start</button>
+</div>
+
+
+</body>
+</html>
