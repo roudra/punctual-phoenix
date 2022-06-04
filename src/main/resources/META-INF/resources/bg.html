@@ -39,13 +39,13 @@
 
         function callApi(){
             cntr++;
-            document.getElementById("total").innerText = cntr;
+
             var request = new XMLHttpRequest();
             request.open('GET', 'https://punctual-phoenix-kn-native-rr42724-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com/settings')
-<!--            request.open('GET', 'http://localhost:8080/settings')-->
             request.send();
             request.onload = ()=>{
-                var color = JSON.parse(request.response).color
+                var color = JSON.parse(request.response).color;
+                document.getElementById("total").innerText = cntr;
                 if(color == "RED"){
                     document.getElementById("red").innerText = ++red;
                     document.getElementById("redp").innerText = (red*100/(red+blue+green)) + "%";
