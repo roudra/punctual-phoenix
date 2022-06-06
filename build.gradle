@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id "org.sonarqube" version "3.3"
 }
 
 repositories {
@@ -46,4 +47,12 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "roudra_punctual-phoenix"
+        property "sonar.organization", "roudra"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
