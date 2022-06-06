@@ -56,5 +56,6 @@ sonarqube {
         property "sonar.organization", "roudra"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.jacoco.reportPaths", "build/jacoco-quarkus.exec"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/jacoco-report/jacoco.xml"
     }
 }
