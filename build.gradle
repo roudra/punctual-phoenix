@@ -55,5 +55,6 @@ sonarqube {
         property "sonar.projectKey", "roudra_punctual-phoenix"
         property "sonar.organization", "roudra"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.jacoco.reportPaths", "build/jacoco-quarkus.exec"
     }
 }
