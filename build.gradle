@@ -28,9 +28,13 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombok}"
 
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'io.rest-assured:rest-assured'
+//    testImplementation 'io.quarkus:quarkus-junit5'
+//    testImplementation 'io.rest-assured:rest-assured'
+
+    testCompile "com.intuit.karate:karate-junit5:${karateVersion}"
 }
+
+
 
 group 'org.rr'
 version '1.0.13'
@@ -55,4 +59,11 @@ sonarqube {
         property "sonar.organization", "roudra"
         property "sonar.host.url", "https://sonarcloud.io"
     }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
 }

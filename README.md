@@ -1,6 +1,6 @@
 # Punctual Phoenix
 
-[![Sonar](https://github.com/roudra/punctual-phoenix/actions/workflows/sonar.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/sonar.yml)[![K-Native](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native.yml) [![OSE Qrks JVM](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm.yml) [![OSE Qrks-n](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native.yml)
+[![Sonar](https://github.com/roudra/punctual-phoenix/actions/workflows/sonar.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/sonar.yml) [![K-Native](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/kn-qrks-native.yml) [![OSE Qrks JVM](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-jvm.yml) [![OSE Qrks-n](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native.yml/badge.svg)](https://github.com/roudra/punctual-phoenix/actions/workflows/ose-qrks-native.yml)
 
 
 
