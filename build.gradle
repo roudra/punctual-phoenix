@@ -33,7 +33,7 @@ dependencies {
 }
 
 group 'org.rr'
-version '1.0.12'
+version '1.0.13'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
