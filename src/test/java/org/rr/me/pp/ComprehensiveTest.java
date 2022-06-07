@@ -16,7 +16,7 @@ public class ComprehensiveTest {
     @Test
      void testParallel() {
         Results results = Runner.path("classpath:org/rr/me/pp").parallel(5);
-        Assert.assertTrue(results.getErrorMessages(), results.getFailCount() == 0);
+        Assert.assertEquals(results.getErrorMessages(), results.getFailCount() == 0);
     }
 //    @Test
 //    void testHelloEndpoint() {

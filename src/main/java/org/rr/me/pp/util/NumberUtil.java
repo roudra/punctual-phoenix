@@ -1,12 +1,13 @@
 package org.rr.me.pp.util;
 
 import javax.inject.Singleton;
+import java.util.Random;
 
 @Singleton
 public class NumberUtil {
 
     public int getPrime(){
-        return this.getPrime((int) (Math.random()*100));
+        return this.getPrime(new Random().nextInt(100));
     }
 
     public int getPrime(Integer minimum){
