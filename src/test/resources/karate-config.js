@@ -1,6 +1,6 @@
 function fn() {
   var env = karate.env; // get system property 'karate.env'
-  var url = 'http://localhost:8080/'
+  var url = 'http://localhost:8093/'
   karate.log('karate.env system property was:', env);
 
   if (!env) {

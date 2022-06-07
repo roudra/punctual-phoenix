@@ -29,11 +29,14 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${lombok}"
 
     testImplementation 'io.quarkus:quarkus-junit5'
-//    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.quarkus:quarkus-jacoco'
     testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
-    testImplementation "org.testcontainers:testcontainers:${testContainerVersion}"
     testImplementation 'org.testcontainers:junit-jupiter'
+
+
+//    implementation 'org.graalvm.sdk:graal-sdk:22.0.0.2'
+//    implementation 'org.graalvm.js:js:22.0.0.2'
 
 }
 
@@ -64,13 +67,6 @@ sonarqube {
     }
 }
 
-//test {
-//    useJUnitPlatform()
-//    systemProperty "karate.options", System.properties.getProperty("karate.options")
-//    systemProperty "karate.env", System.properties.getProperty("karate.env")
-//    outputs.upToDateWhen { false }
-//}
-
 sourceSets {
     test {
         resources {
@@ -81,15 +77,10 @@ sourceSets {
 }
 
 test {
+    useJUnitPlatform()
     exclude '**/it/*'
-}
-
-task karateNativeTest (type: Test){
-    group = 'verification'
-    include '**/it/*'
     ignoreFailures = true
     systemProperty "karate.options", System.properties.getProperty("karate.options")
     systemProperty "karate.env", System.properties.getProperty("karate.env")
     outputs.upToDateWhen { false }
-
 }

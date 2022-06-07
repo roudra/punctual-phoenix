@@ -4,7 +4,7 @@ Feature: Say Hello feature
     * url baseUrl
 
   Scenario: Testing the exact response of a GET endpoint
-    Given path 'greeting'
+    Given path 'settings'
     When method GET
     Then status 200
-    And match $ == "Hello world!"
+    And match $ == {"color":"RED"}
