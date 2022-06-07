@@ -1,10 +1,10 @@
-Feature: Say Hello feature
+Feature: Check Settings Feature
 
   Background:
     * url baseUrl
 
   Scenario: Testing the exact response of a GET endpoint
-    Given path 'hello'
+    Given path 'settings'
     When method GET
     Then status 200
-    And match $ == "Hello from RESTEasy Reactive"
+    And match $.color == "RED"
