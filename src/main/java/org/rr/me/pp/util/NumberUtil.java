@@ -6,8 +6,14 @@ import java.util.Random;
 @Singleton
 public class NumberUtil {
 
+    final Random ran;
+
+    public NumberUtil(){
+        ran= new Random();
+    }
+
     public int getPrime(){
-        return this.getPrime(new Random().nextInt(100));
+        return this.getPrime(ran.nextInt(100));
     }
 
     public int getPrime(Integer minimum){
