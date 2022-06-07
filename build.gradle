@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-//    implementation 'io.quarkus:quarkus-container-image-jib' -- Will enable if i decide not to use Dockerfiles.
-    implementation 'io.quarkus:quarkus-kubernetes'
-
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+    //    implementation 'io.quarkus:quarkus-container-image-jib' -- Will enable if i decide not to use Dockerfiles.
+    implementation 'io.quarkus:quarkus-kubernetes'
 
     implementation 'io.quarkus:quarkus-resteasy-reactive'
     implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
@@ -35,17 +35,18 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
 
 
-//    implementation 'org.graalvm.sdk:graal-sdk:22.0.0.2'
-//    implementation 'org.graalvm.js:js:22.0.0.2'
-
+    //Added below lines to remove error with Karate graalvm.js
+    implementation "org.graalvm.js:js:${graalvmPluginVersion}"
+    implementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
+    implementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
 }
 
 group 'org.rr'
 version '1.0.14'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 compileJava {
