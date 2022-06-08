@@ -22,20 +22,6 @@ jobs:
         with:
           java-version: ${{ matrix.java-version}}
       - name: Build & Test
-        run: ./gradlew clean build test --info
-  multi-os-matrix-gradle:
-    strategy:
-      matrix:
-        java-version: [ 11, 17 ]
-        os: [ ubuntu-latest, windows-latest ]
-    runs-on: ${{ matrix.os}}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up VM
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.java-version}}
-      - name: Build & Test
         if: ${{ matrix.os != 'windows-latest'}}
         run: ./gradlew clean build test --info
       - name: Build & Test
