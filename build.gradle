@@ -31,19 +31,13 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.quarkus:quarkus-jacoco'
-    testImplementation ("com.intuit.karate:karate-junit5:${karateVersion}")
-    {
-        exclude group: 'org.graalvm.js', module: 'js-scriptengine'
-        exclude group: 'org.graalvm.js', module: 'js'
-
-    }
-    testImplementation 'org.testcontainers:junit-jupiter'
-
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
 
     //Added below lines to remove error with Karate graalvm.js
-    implementation "org.graalvm.js:js:${graalvmPluginVersion}"
-    implementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
-    implementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
+//    implementation "org.graalvm.js:js:${graalvmPluginVersion}"
+//    implementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
+//    implementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
+//    implementation "org.graalvm.truffle:truffle-api:${graalvmPluginVersion}"
 }
 
 group 'org.rr'
