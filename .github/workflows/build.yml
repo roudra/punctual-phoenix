@@ -17,10 +17,20 @@ jobs:
     runs-on: ${{ matrix.os}}
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK
+      - name: Set up JVM
+        if: ${{ matrix.vm-type != 'jvm'}}
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java-version}}
+
+      - name: Set up GraalVM
+        if: ${{ matrix.vm-type != 'graalvm'}}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: ${{ matrix.graal-version}}
+          java-version: ${{ matrix.java-version}}
+          components: native-image
+
       - name: Build & Test
         if: ${{ matrix.os != 'windows-latest'}}
         run: ./gradlew clean build test --info
