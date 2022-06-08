@@ -1,8 +1,8 @@
 package org.rr.me.pp.it;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
-import org.rr.me.pp.ComprehensiveTest;
+import org.rr.me.pp.PhoenixTest;
 
 @QuarkusIntegrationTest
-public class ComprehensiveIT extends ComprehensiveTest {
+public class PhoenixIT extends PhoenixTest {
 }

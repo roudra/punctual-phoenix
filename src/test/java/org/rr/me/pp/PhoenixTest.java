@@ -2,7 +2,6 @@ package org.rr.me.pp;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
-import com.intuit.karate.junit5.Karate;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,11 +10,17 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-public class ComprehensiveTest {
+public class PhoenixTest {
 
     @Test
-     void testParallel() {
-        Results results = Runner.path("classpath:org/rr/me/pp").parallel(4);
+     void fullTest() {
+        Results results = Runner.path("classpath:org/rr/me/pp").tags("@smoke").parallel(4);
+        Assert.assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
+    }
+
+    @Test
+    void smokeTest() {
+        Results results = Runner.path("classpath:org/rr/me/pp").tags("@smoke").parallel(4);
         Assert.assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
     }
 }
