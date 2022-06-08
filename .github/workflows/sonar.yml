@@ -4,7 +4,11 @@ on:
     branches:
       - main
       - development
-      - feature/*
+      - feature/**
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
