@@ -34,10 +34,10 @@ dependencies {
     testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
 
     //Added below lines to remove error with Karate graalvm.js
-//    implementation "org.graalvm.js:js:${graalvmPluginVersion}"
-//    implementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
-//    implementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
-//    implementation "org.graalvm.truffle:truffle-api:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.js:js:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.truffle:truffle-api:${graalvmPluginVersion}"
 }
 
 group 'org.rr'
