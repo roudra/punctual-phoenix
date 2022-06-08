@@ -15,9 +15,11 @@ public class ComprehensiveTest {
 
     @Test
      void testParallel() {
-        Results results = Runner.path("classpath:org/rr/me/pp").parallel(3);
+        Results results = Runner.path("classpath:org/rr/me/pp").parallel(4);
         Assert.assertEquals(results.getErrorMessages(), results.getFailCount(), 0);
     }
+}
+
 //    @Test
 //    void testHelloEndpoint() {
 //        given()
@@ -26,5 +28,3 @@ public class ComprehensiveTest {
 //                .statusCode(200)
 //                .body(is("Hello from RESTEasy Reactive"));
 //    }
-
-}
