@@ -8,7 +8,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
-  multi-os-matrix-java:
+  build:
     strategy:
       matrix:
         java-version: [11, 17]
