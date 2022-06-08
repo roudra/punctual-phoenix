@@ -35,7 +35,7 @@ jobs:
 
       - name: Build & Test
         if: ${{ matrix.os != 'windows-latest'}}
-        run: ./gradlew clean build test --info
+        run: ./gradlew test --tests "org.rr.me.pp.PhoenixTest.smokeTest"
       - name: Build & Test
         if: ${{ matrix.os == 'windows-latest'}}
         run: ./gradlew.bat test --tests "org.rr.me.pp.PhoenixTest.smokeTest"
