@@ -5,12 +5,13 @@ on:
 #       - main
 #       - development
 #       - feature/**
+  #  pull_request:
+  #    types: [opened, synchronize, reopened]
   workflow_run:
     workflows: [Build]
     types:
       - completed
-  pull_request:
-    types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build
