@@ -27,7 +27,7 @@ jobs:
         if: ${{ matrix.vm-type != 'graalvm'}}
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.graal-version}}
+          version: latest
           java-version: ${{ matrix.java-version}}
           components: native-image
 

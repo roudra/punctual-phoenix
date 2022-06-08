@@ -31,7 +31,12 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.quarkus:quarkus-jacoco'
-    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    testImplementation ("com.intuit.karate:karate-junit5:${karateVersion}")
+    {
+        exclude group: 'org.graalvm.js', module: 'js-scriptengine'
+        exclude group: 'org.graalvm.js', module: 'js'
+
+    }
     testImplementation 'org.testcontainers:junit-jupiter'
 
 
