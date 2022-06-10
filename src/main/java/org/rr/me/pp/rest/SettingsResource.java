@@ -13,6 +13,6 @@ public class SettingsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Settings getSettings() {
-        return Settings.builder().color("RED").build();
+        return Settings.builder().color("BLUE").build();
     }
 }
