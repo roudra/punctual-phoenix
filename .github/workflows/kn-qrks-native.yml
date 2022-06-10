@@ -13,10 +13,14 @@ env:
   IMAGE_TAGS: ""
 
 on:
-  push:
-    branches:
-      - main
-      - development
+#  push:
+#    branches:
+#      - main
+#      - development
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
 jobs:
   openshift-ci-cd:
     name: Build and deploy to OpenShift
