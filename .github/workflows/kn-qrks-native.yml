@@ -18,7 +18,7 @@ on:
 #      - main
 #      - development
   workflow_run:
-    workflows: [Build]
+    workflows: [Sonar]
     types:
       - completed
 jobs:
