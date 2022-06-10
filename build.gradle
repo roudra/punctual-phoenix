@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-//    implementation 'io.quarkus:quarkus-container-image-jib' -- Will enable if i decide not to use Dockerfiles.
-    implementation 'io.quarkus:quarkus-kubernetes'
-
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+    //    implementation 'io.quarkus:quarkus-container-image-jib' -- Will enable if i decide not to use Dockerfiles.
+    implementation 'io.quarkus:quarkus-kubernetes'
 
     implementation 'io.quarkus:quarkus-resteasy-reactive'
     implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
@@ -31,10 +31,17 @@ dependencies {
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'io.quarkus:quarkus-jacoco'
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+
+    //Added below lines to remove error with Karate graalvm.js
+    testImplementation "org.graalvm.js:js:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.js:js-scriptengine:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.sdk:graal-sdk:${graalvmPluginVersion}"
+    testImplementation "org.graalvm.truffle:truffle-api:${graalvmPluginVersion}"
 }
 
 group 'org.rr'
-version '1.0.13'
+version '1.0.14'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -58,4 +65,22 @@ sonarqube {
         property "sonar.jacoco.reportPaths", "build/jacoco-quarkus.exec"
         property "sonar.coverage.jacoco.xmlReportPaths", "build/jacoco-report/jacoco.xml"
     }
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    exclude '**/it/*'
+    ignoreFailures = true
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
 }

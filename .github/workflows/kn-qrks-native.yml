@@ -1,5 +1,5 @@
 
-name: K-Native
+name: Deploy Knative
 
 env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}

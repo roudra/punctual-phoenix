@@ -1,0 +1,43 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - development
+      - feature/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        vm-type: [graalvm]
+        java-version: [11, 17]
+    runs-on: ${{ matrix.os}}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JVM
+        if: ${{ matrix.vm-type == 'jvm'}}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version}}
+
+      - name: Set up GraalVM
+        if: ${{ matrix.vm-type == 'graalvm'}}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: latest
+          github-token: ${{ github.token }}
+          java-version: ${{ matrix.java-version}}
+          components: native-image
+
+      - name: Build & Test
+        if: ${{ matrix.os != 'windows-latest'}}
+        timeout-minutes: 10
+        run: ./gradlew test --tests "org.rr.me.pp.PhoenixTest.smokeTest"
+      - name: Build & Test
+        if: ${{ matrix.os == 'windows-latest'}}
+        timeout-minutes: 10
+        run: ./gradlew.bat test --tests "org.rr.me.pp.PhoenixTest.smokeTest"
