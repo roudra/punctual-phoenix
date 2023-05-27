@@ -1,0 +1,17 @@
+name: Tag Version
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    generate-ver:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+            - name: tag
+              uses: roudra/semantic-version-generator@main
+
